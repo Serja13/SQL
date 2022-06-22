@@ -1,0 +1,63 @@
+--Show Customers (their full names, customer ID, and country) who are not in the US.
+SELECT 
+      FirstName
+    , LastName
+    , CustomerId
+    , Country
+FROM customers
+WHERE country <> 'USA';
+
+--Show only the customers from Brazil
+SELECT
+    *
+FROM Customers
+WHERE country = 'Brazil';
+
+--Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+
+SELECT
+      c.FirstName
+    , c.LastName
+    , i.InvoiceId
+    , i.InvoiceDate
+    , i.BillingCountry
+FROM invoices i
+INNER JOIN customers c
+    ON c.CustomerId = i.CustomerId
+WHERE c.country = 'Brazil';
+    
+--Show the Employees who are Sales Agents.
+
+SELECT
+    *
+FROM employees
+WHERE Title like '%Agent%';
+
+--Find a unique/distinct list of billing countries from the Invoice table.
+
+SELECT distinct(BillingCountry)
+FROM invoices;
+
+--Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+SELECT
+      e.FirstName
+    , e.LastName
+    , i.InvoiceId
+    , i.InvoiceDate
+FROM invoices i
+INNER JOIN customers c
+    ON c.CustomerId = i.CustomerId
+INNER JOIN employees e
+    ON c.SupportRepid = e.Employeeid;
+
+--How many orders per sales agent?
+SELECT
+     e.FirstName || ' ' || e.LastName            
+    , count(InvoiceId) as How_many
+FROM invoices i
+INNER JOIN customers c
+    ON c.CustomerId = i.CustomerId
+INNER JOIN employees e
+    ON c.SupportRepid = e.Employeeid
+GROUP BY e.FirstName || " " || e.LastName;
+
